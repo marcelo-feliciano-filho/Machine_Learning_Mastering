@@ -34,10 +34,10 @@ class Lasso:
 
     def five_fold_val(self):
         # Retorna a validação com cinco testes para o dataset de treino (70% dos dados)
-        self.plot_mdl()  # Plota os gráficos
+        self.plot_mdl()  # Plota os gráficos antes de retornar os resultados do 'five-fold'
         return cross_val_score(self.clf, self.X_train, self.Y_train, cv=5, scoring='r2')
 
-    def plot_mdl(self):
+    def plot_mdl(self):  # TODO: Plota apenas o MSE do modelo, os demais plots ainda devem ser feitos
         plt.figure(self.i)
         plt.semilogx(self.model.alphas_, self.model.mse_path_, ':')
         plt.plot(self.model.alphas_, self.model.mse_path_.mean(axis=-1), 'k', label='Average across the folds')
