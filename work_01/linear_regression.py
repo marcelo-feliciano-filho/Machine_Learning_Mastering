@@ -8,54 +8,51 @@ Created on Thu Apr  1 14:59:14 2021
 # Linear Regression
 
 # Importing the libraries
-import numpy as np
+from os import path as ospath
 import matplotlib.pyplot as plt
 import pandas as pd
-
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
+from sklearn.feature_selection import VarianceThreshold
 plt.close('all') # Closes all plots
 
 index_a = 1
 index_b = 2
+root_dir = 'docs'
+datasets = ['Airfoil_Self-Noise_Data_Set', 'qsar_aquatic_toxicity', 'qsar_fish_toxicity']
 
-for file in range(1,4):
+for file in datasets:
     
-    # Dataset id
-    if file == 1:
-        print("1 - QSAR aquatic toxicity Data Set")
-    elif file ==2:
-        print("2 - QSAR Fish toxicity Data Set")
-    else:
-        print("3 - Airfoil Self-Noise Data Set")
-    
-
+    print(f'Presenting {file} Benchmark results for LinearRegression')
+        
     # Importing the dataset
-    dataset = pd.read_csv('{}.csv'.format(file),delimiter=";")
+    dataset = pd.read_csv(f'{ospath.join(root_dir,file)}.csv',delimiter=";")
     
     #Defining inputs and outputs
     X = dataset.iloc[:, :-1].values
     y = dataset.iloc[:, -1].values
     
+    # Transforms input array X into Variance Threshold to remove low-variance features
+    sel = VarianceThreshold(threshold=(.8 * (1 - .8)))
+    X = sel.fit_transform(X)
     
     # Splitting the dataset into the Training set and Test set
-    from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
     
     
     # Training the Multiple Linear Regression model on the Training set
-    from sklearn.linear_model import LinearRegression
     regressor = LinearRegression()
     regressor.fit(X_train, y_train)
     
     # Applying cross validation
-    from sklearn.model_selection import cross_val_score
     scores = cross_val_score(regressor, X_train, y_train, cv=5)
     print("%0.2f Accuracy with a standard deviation of %0.2f" % (scores.mean(), scores.std()))
     
     # Predicting the Test set results
     y_pred = regressor.predict(X_test)
     
-    # Regression metrics
-    from sklearn.metrics import *
     # Coefficient of determination R2 
     R2_train = regressor.score(X, y)
     print('Coefficient of determination (training): '+str(round(R2_train,5)))
