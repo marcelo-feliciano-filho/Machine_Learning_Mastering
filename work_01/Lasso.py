@@ -20,11 +20,12 @@ from sklearn.feature_selection import VarianceThreshold
 index_a = 1
 index_b = 2
 root_dir = 'docs'
+method = 'LASSO'
 datasets = ['Airfoil_Self-Noise_Data_Set', 'qsar_aquatic_toxicity', 'qsar_fish_toxicity']
 
 for file in datasets:
     
-    print(f'Presenting {file} Benchmark results for LASSO')
+    print(f'Presenting {file} Benchmark results for {method}')
         
     # Importing the dataset
     dataset = pd.read_csv(f'{ospath.join(root_dir,file)}.csv',delimiter=";")
@@ -88,7 +89,7 @@ for file in datasets:
     plt.grid(axis='x', color='0.95')
     plt.grid(axis='y', color='0.95')
     if file == 'Airfoil_Self-Noise_Data_Set':
-        plt.ylabel('decibels (dB)')    
+        plt.ylabel('decibels (dB)')
     else:
         plt.ylabel('LC50 [-LOG(mol/L)]')
     

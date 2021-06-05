@@ -11,10 +11,6 @@ Created on Thu Apr  1 14:59:14 2021
 
 @author: Bruno, Marcelo & Murillo
 """
-
-# ElasticNet Regression 
-
- 
 # Importing the libraries
 from os import path as ospath
 import matplotlib.pyplot as plt
@@ -24,6 +20,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 from sklearn.feature_selection import VarianceThreshold
 
+method = 'ElasticNet Regression'
 index_a = 1
 index_b = 2
 root_dir = 'docs'
@@ -31,7 +28,7 @@ datasets = ['Airfoil_Self-Noise_Data_Set', 'qsar_aquatic_toxicity', 'qsar_fish_t
 
 for file in datasets:
     
-    print(f'Presenting {file} Benchmark results for LASSO')
+    print(f'Presenting {file} Benchmark results for {method}')
         
     # Importing the dataset
     dataset = pd.read_csv(f'{ospath.join(root_dir,file)}.csv',delimiter=";")
@@ -81,7 +78,7 @@ for file in datasets:
     plt.xlabel('Samples')
     plt.xlim(0, len(y_pred))
     plt.title('Comparison between real and predict')
-    if file == 3:
+    if file == 'Airfoil_Self-Noise_Data_Set':
         plt.ylabel('decibels (dB)')
     else:
         plt.ylabel('LC50 [-LOG(mol/L)]')
@@ -94,8 +91,8 @@ for file in datasets:
     plt.title('Residual')
     plt.grid(axis='x', color='0.95')
     plt.grid(axis='y', color='0.95')
-    if file == 3:
-        plt.ylabel('decibels (dB)')    
+    if file == 'Airfoil_Self-Noise_Data_Set':
+        plt.ylabel('decibels (dB)')
     else:
         plt.ylabel('LC50 [-LOG(mol/L)]')
     

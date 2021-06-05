@@ -4,10 +4,6 @@ Created on Thu Apr  1 14:59:14 2021
 
 @author: Bruno, Marcelo & Murillo
 """
-
-# Ridge Linear Regression 
-
- 
 # Importing the libraries
 from os import path as ospath
 import matplotlib.pyplot as plt
@@ -20,10 +16,11 @@ index_a = 1
 index_b = 2
 root_dir = 'docs'
 datasets = ['Airfoil_Self-Noise_Data_Set', 'qsar_aquatic_toxicity', 'qsar_fish_toxicity']
+method = 'RIDGE Regression'
 
 for file in datasets:
     
-    print(f'Presenting {file} Benchmark results for LASSO')
+    print(f'Presenting {file} Benchmark results for {method}')
         
     # Importing the dataset
     dataset = pd.read_csv(f'{ospath.join(root_dir,file)}.csv',delimiter=";")
@@ -39,7 +36,6 @@ for file in datasets:
     # Splitting the dataset into the Training set and Test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
     
-    
     # Training the Multiple Linear Regression model on the Training set
     regressor = linear_model.RidgeCV(alphas=[1e-3, 1e-2, 1e-1, 1], cv=5).fit(X_train,y_train)
     
@@ -53,7 +49,6 @@ for file in datasets:
     MSE = mean_squared_error(y_test,y_pred)
     print('Mean Squared Error (test): '+str(round(MSE,5)))
     
-    
     # Coefficient of determination
     R2 = r2_score(y_test,y_pred)
     print('Coefficient of determination (test): '+str(round(R2,5)))
@@ -62,10 +57,7 @@ for file in datasets:
     MAE = mean_absolute_error(y_test,y_pred)
     print('Mean absolute Error (test): '+str(round(MAE,5)))
     
-    
-    # Plotting results
-    # Plotting real x predict
-    
+    # Plotting results, Plotting real x predict
     plt.figure(index_a)
     plt.plot(y_test,color='royalblue',label='Real')
     plt.plot(y_pred,color='crimson',label='Predict')
@@ -75,7 +67,7 @@ for file in datasets:
     plt.xlabel('Samples')
     plt.xlim(0, len(y_pred))
     plt.title('Comparison between real and predict')
-    if file == 3:
+    if file == 'Airfoil_Self-Noise_Data_Set':
         plt.ylabel('decibels (dB)')
     else:
         plt.ylabel('LC50 [-LOG(mol/L)]')
@@ -88,12 +80,10 @@ for file in datasets:
     plt.title('Residual')
     plt.grid(axis='x', color='0.95')
     plt.grid(axis='y', color='0.95')
-    if file == 3:
-        plt.ylabel('decibels (dB)')    
+    if file == 'Airfoil_Self-Noise_Data_Set':
+        plt.ylabel('decibels (dB)')
     else:
         plt.ylabel('LC50 [-LOG(mol/L)]')
     
     index_a = index_a + 2;
     index_b = index_b + 2;
-    
-    
