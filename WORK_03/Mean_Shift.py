@@ -34,7 +34,7 @@ for dt, episodes in dict_dt.items():
         
         # Using the elbow method to find the optimal number of clusters
         # Training the K-Means model on the dataset
-        ms = MeanShift(bandwidth=2).fit(X)
+        ms = MeanShift(bandwidth=ep).fit(X)
         labels = ms.labels_
         # Clustering performance evaluation
     
